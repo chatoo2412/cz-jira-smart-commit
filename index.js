@@ -31,11 +31,11 @@ function prompter(cz, commit) {
   inquirer.prompt([
     {
       type: 'input',
-      name: 'message',
-      message: 'GitHub commit message (required):\n',
+      name: 'issues',
+      message: 'Jira Issue ID(s) (required):\n',
       validate: function(input) {
         if (!input) {
-          return 'empty commit message';
+          return 'Must specify issue IDs, otherwise, just use a normal commit message';
         } else {
           return true;
         }
@@ -43,11 +43,11 @@ function prompter(cz, commit) {
     },
     {
       type: 'input',
-      name: 'issues',
-      message: 'Jira Issue ID(s) (required):\n',
+      name: 'message',
+      message: 'GitHub commit message (required):\n',
       validate: function(input) {
         if (!input) {
-          return 'Must specify issue IDs, otherwise, just use a normal commit message';
+          return 'empty commit message';
         } else {
           return true;
         }
@@ -67,13 +67,13 @@ function prompter(cz, commit) {
     },
     {
       type: 'input',
-      name: 'time',
-      message: 'Time spent (i.e. 3h 15m) (optional):\n'
+      name: 'comment',
+      message: 'Jira comment (optional):\n'
     },
     {
       type: 'input',
-      name: 'comment',
-      message: 'Jira comment (optional):\n'
+      name: 'time',
+      message: 'Time spent (i.e. 3h 15m) (optional):\n'
     },
   ]).then((answers) => {
     formatCommit(commit, answers);
@@ -82,11 +82,11 @@ function prompter(cz, commit) {
 
 function formatCommit(commit, answers) {
   commit(filter([
-    answers.message,
     answers.issues,
+    answers.message,
     answers.workflow ? '#' + answers.workflow : undefined,
-    answers.time ? '#time ' + answers.time : undefined,
     answers.comment ? '#comment ' + answers.comment : undefined,
+    answers.time ? '#time ' + answers.time : undefined,
   ]).join(' '));
 }
 
